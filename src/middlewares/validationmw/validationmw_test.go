@@ -2,12 +2,14 @@ package validationmw
 
 import (
 	"encoding/json"
-	"github.com/ArtemGretsov/golang-server-template/src/server"
 	"github.com/gofiber/fiber/v2"
+	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
+
+	"github.com/ArtemGretsov/golang-server-template/src/server"
 )
 
 const TestRoute = "/test"
@@ -38,7 +40,7 @@ func sendRequestWithQuery(query string) (*http.Response, error) {
 		return ctx.SendStatus(fiber.StatusOK)
 	})
 
-	r := httptest.NewRequest("GET", TestRoute + query, nil)
+	r := httptest.NewRequest("GET", TestRoute+query, nil)
 
 	return app.Test(r)
 }
@@ -52,15 +54,8 @@ func Test_Validation_ValidateBodyMiddleware_Success(t *testing.T) {
 
 	response, err := sendRequestWithBody(jsonValidMockData)
 
-	if err != nil {
-		t.Fatalf("sending request error: %s", err.Error())
-		return
-	}
-
-	if response.StatusCode != fiber.StatusOK {
-		t.Fatal("success validation error")
-		return
-	}
+	assert.Nil(t, err)
+	assert.Equal(t, response.StatusCode, fiber.StatusOK, "success validation error")
 }
 
 func Test_Validation_ValidateBodyMiddleware_Fail(t *testing.T) {
@@ -71,15 +66,8 @@ func Test_Validation_ValidateBodyMiddleware_Fail(t *testing.T) {
 
 	response, err := sendRequestWithBody(jsonInvalidMockData)
 
-	if err != nil {
-		t.Fatalf("Sending request error: %s", err.Error())
-		return
-	}
-
-	if response.StatusCode != fiber.StatusBadRequest {
-		t.Fatal("Failed validation error")
-		return
-	}
+	assert.Nil(t, err)
+	assert.Equal(t, response.StatusCode, fiber.StatusBadRequest, "fail validation error")
 }
 
 func Benchmark_Validation_ValidateBodyMiddleware(b *testing.B) {
@@ -103,28 +91,13 @@ func Benchmark_Validation_ValidateQueryMiddleware(b *testing.B) {
 func Test_Validation_ValidateQueryMiddleware_Success(t *testing.T) {
 	response, err := sendRequestWithQuery("?name=Timber&login=saw&password=query")
 
-	if err != nil {
-		t.Fatalf("sending request error: %s", err.Error())
-		return
-	}
-
-	if response.StatusCode != fiber.StatusOK {
-		t.Fatal("success validation error")
-		return
-	}
+	assert.Nil(t, err)
+	assert.Equal(t, response.StatusCode, fiber.StatusOK, "success validation error")
 }
 
 func Test_Validation_ValidateQueryMiddleware_Fail(t *testing.T) {
 	response, err := sendRequestWithQuery("?name=Timber&password=query")
 
-	if err != nil {
-		t.Fatalf("sending request error: %s", err.Error())
-		return
-	}
-
-	if response.StatusCode != fiber.StatusBadRequest {
-		t.Fatal("success validation error")
-		return
-	}
+	assert.Nil(t, err)
+	assert.Equal(t, response.StatusCode, fiber.StatusBadRequest, "fail validation error")
 }
-

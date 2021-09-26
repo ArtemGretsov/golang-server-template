@@ -5,7 +5,7 @@ POSTGRES_CONNECT_STRING=postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$
 MIGRATIONS_DIR=./src/database/migrations
 
 app-test:
-	@TEST_EVN=1 go test -v ./src/... | grep -v "no test files"
+	@TEST_EVN=1 go test ./src/... | grep -v "no test files"
 
 app-benchmark:
 	@go test -bench Benchmark -benchtime=1000x -benchmem ./src/...

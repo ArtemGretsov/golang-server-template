@@ -1,6 +1,7 @@
 package authmw
 
 import (
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -12,20 +13,10 @@ func Test_AuthGuard_Create_And_Parse_JWT(t *testing.T) {
 	}
 
 	token, err := CreateJWT(inJWTPayload)
-
-	if err != nil {
-		t.Fatal(err.Error())
-		return
-	}
+	assert.Nil(t, err)
 
 	outJWTPayload, err := ParseJWT(token)
+	assert.Nil(t, err)
 
-	if err != nil {
-		t.Fatal(err.Error())
-		return
-	}
-
-	if inJWTPayload != outJWTPayload {
-		t.Fatal("payload is different")
-	}
+	assert.Equal(t, inJWTPayload, outJWTPayload, "payload is different")
 }
