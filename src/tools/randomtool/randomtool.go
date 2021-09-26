@@ -4,15 +4,9 @@ import (
 	"math/rand"
 )
 
-type random struct {
-	Chars string
-}
+const Chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-var Random = random{
-	Chars: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
-}
-
-func (r random) CreateString(length int) (string, error) {
+func CreateString(length int) (string, error) {
 	bytes := make([]byte, length)
 
 	if _, err := rand.Read(bytes); err != nil {
@@ -20,7 +14,7 @@ func (r random) CreateString(length int) (string, error) {
 	}
 
 	for i, b := range bytes {
-		bytes[i] = r.Chars[b%byte(len(r.Chars))]
+		bytes[i] = Chars[b%byte(len(Chars))]
 	}
 
 	return string(bytes), nil
