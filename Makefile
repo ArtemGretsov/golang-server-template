@@ -1,6 +1,5 @@
 -include .env
 -include .env.local
--include .env.prod
 
 POSTGRES_CONNECT_STRING=postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=disable
 MIGRATIONS_DIR=./src/database/migrations
