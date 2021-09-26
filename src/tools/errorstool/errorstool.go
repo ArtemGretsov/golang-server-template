@@ -1,4 +1,4 @@
-package errorsutil
+package errorstool
 
 import (
 	"github.com/gofiber/fiber/v2"

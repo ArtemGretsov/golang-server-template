@@ -2,10 +2,11 @@ package database
 
 import (
 	"fmt"
-	"github.com/ArtemGretsov/golang-server-template/src/config"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"sync"
+
+	"github.com/ArtemGretsov/golang-server-template/config"
 )
 
 var DBInstance *sqlx.DB

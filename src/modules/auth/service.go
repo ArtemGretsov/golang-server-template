@@ -1,11 +1,12 @@
 package auth
 
 import (
-	"github.com/ArtemGretsov/golang-server-template/src/database/repositories/userrep"
-	"github.com/ArtemGretsov/golang-server-template/src/middlewares/authmw"
-	"github.com/ArtemGretsov/golang-server-template/src/tools/errorsutil"
 	"github.com/gofiber/fiber/v2"
 	"golang.org/x/crypto/bcrypt"
+
+	"github.com/ArtemGretsov/golang-server-template/src/database/repositories/userrep"
+	"github.com/ArtemGretsov/golang-server-template/src/middlewares/authmw"
+	"github.com/ArtemGretsov/golang-server-template/src/tools/errorstool"
 )
 
 type ServiceType struct {
@@ -31,7 +32,7 @@ func (s *ServiceType) Signup(ctx *fiber.Ctx) error {
 	hashPassword, err := bcrypt.GenerateFromPassword([]byte(body.Password), bcrypt.DefaultCost)
 
 	if err != nil {
-		return errorsutil.NewHTTPInternalServerError(err.Error())
+		return errorstool.NewHTTPInternalServerError(err.Error())
 	}
 
 	user, err := s.UserRepository.SaveUser(userrep.User{
@@ -41,7 +42,7 @@ func (s *ServiceType) Signup(ctx *fiber.Ctx) error {
 	})
 
 	if err != nil {
-		return errorsutil.NewHTTPInternalServerError(err.Error())
+		return errorstool.NewHTTPInternalServerError(err.Error())
 	}
 
 	token, err := authmw.CreateJWT(authmw.JWTPayload{
@@ -51,7 +52,7 @@ func (s *ServiceType) Signup(ctx *fiber.Ctx) error {
 	})
 
 	if err != nil {
-		return errorsutil.NewHTTPInternalServerError(err.Error())
+		return errorstool.NewHTTPInternalServerError(err.Error())
 	}
 
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{

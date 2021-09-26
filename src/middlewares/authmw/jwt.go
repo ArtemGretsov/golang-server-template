@@ -2,16 +2,17 @@ package authmw
 
 import (
 	"fmt"
-	"github.com/ArtemGretsov/golang-server-template/src/config"
 	"github.com/golang-jwt/jwt"
+
+	"github.com/ArtemGretsov/golang-server-template/config"
 )
 
 func CreateJWT(payload JWTPayload) (string, error) {
 	serverConfig := config.Get()
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"id": payload.ID,
-		"name": payload.Name,
+		"id":    payload.ID,
+		"name":  payload.Name,
 		"login": payload.Login,
 	})
 
@@ -25,7 +26,7 @@ func ParseJWT(tokenString string) (JWTPayload, error) {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
 
-		return  []byte(serverConfig["JWT_SECRET"]), nil
+		return []byte(serverConfig["JWT_SECRET"]), nil
 	})
 
 	if err != nil {
@@ -36,8 +37,8 @@ func ParseJWT(tokenString string) (JWTPayload, error) {
 		userID := int(claims["id"].(float64))
 
 		return JWTPayload{
-			ID: userID,
-			Name: claims["name"].(string),
+			ID:    userID,
+			Name:  claims["name"].(string),
 			Login: claims["login"].(string),
 		}, nil
 	}

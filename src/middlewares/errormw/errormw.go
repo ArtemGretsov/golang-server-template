@@ -1,21 +1,22 @@
 package errormw
 
 import (
-	"github.com/ArtemGretsov/golang-server-template/src/tools/errorsutil"
 	"github.com/gofiber/fiber/v2"
+
+	"github.com/ArtemGretsov/golang-server-template/src/tools/errorstool"
 )
 
 func DefaultErrorHandler(ctx *fiber.Ctx, err error) error {
 	requestId := ctx.GetRespHeader(fiber.HeaderXRequestID)
 
-	if httpError, ok := err.(*errorsutil.HTTPError); ok {
+	if httpError, ok := err.(*errorstool.HTTPError); ok {
 		responseError := *httpError
 
 		if responseError.StatusCode == fiber.StatusInternalServerError {
-			responseError.Message = errorsutil.InternalServerErrorMessage
+			responseError.Message = errorstool.InternalServerErrorMessage
 		}
 
-		return ctx.Status(responseError.StatusCode).JSON(errorsutil.HTTPErrorRequestID{
+		return ctx.Status(responseError.StatusCode).JSON(errorstool.HTTPErrorRequestID{
 			HTTPError: &responseError,
 			RequestID: requestId,
 		})
@@ -23,8 +24,8 @@ func DefaultErrorHandler(ctx *fiber.Ctx, err error) error {
 
 	return ctx.
 		Status(fiber.StatusInternalServerError).
-		JSON(errorsutil.HTTPErrorRequestID{
-			HTTPError: errorsutil.NewHTTPInternalServerError(errorsutil.InternalServerErrorMessage),
+		JSON(errorstool.HTTPErrorRequestID{
+			HTTPError: errorstool.NewHTTPInternalServerError(errorstool.InternalServerErrorMessage),
 			RequestID: requestId,
 		})
 }

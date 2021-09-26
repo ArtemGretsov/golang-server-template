@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/ArtemGretsov/golang-server-template/src/config"
+	"github.com/ArtemGretsov/golang-server-template/config"
 	"github.com/ArtemGretsov/golang-server-template/src/database"
 	"github.com/ArtemGretsov/golang-server-template/src/modules"
 	"github.com/ArtemGretsov/golang-server-template/src/server"

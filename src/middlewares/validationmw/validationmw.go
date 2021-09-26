@@ -1,10 +1,11 @@
 package validationmw
 
 import (
-	"github.com/ArtemGretsov/golang-server-template/src/tools/errorsutil"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"reflect"
+
+	"github.com/ArtemGretsov/golang-server-template/src/tools/errorstool"
 )
 
 type ErrorResponse struct {
@@ -13,10 +14,10 @@ type ErrorResponse struct {
 	Value       string `json:"value"`
 }
 
-func validateStruct(body interface{}) []ErrorResponse {
+func validateStruct(schema interface{}) []ErrorResponse {
 	var errors []ErrorResponse
 	validate := validator.New()
-	err := validate.Struct(body)
+	err := validate.Struct(schema)
 
 	if err != nil {
 		for _, err := range err.(validator.ValidationErrors) {
@@ -37,14 +38,14 @@ func ValidateBodyMiddleware(schema interface{}) func(c *fiber.Ctx) error {
 		body := reflect.New(schemaType).Interface()
 
 		if err := c.BodyParser(body); err != nil {
-			return errorsutil.NewHttpBadRequestError("body parsing error")
+			return errorstool.NewHttpBadRequestError("body parsing error")
 		}
 
 		errors := validateStruct(body)
 
 
 		if len(errors) != 0 {
-			return errorsutil.NewHTTPValidationError(errors)
+			return errorstool.NewHTTPValidationError(errors)
 		}
 
 		c.Locals("body", body)
@@ -60,13 +61,13 @@ func ValidateQueryMiddleware(schema interface{}) func(c *fiber.Ctx) error {
 		query := reflect.New(schemaType).Interface()
 
 		if err := c.QueryParser(query); err != nil {
-			return errorsutil.NewHttpBadRequestError("query params parsing error")
+			return errorstool.NewHttpBadRequestError("query params parsing error")
 		}
 
 		errors := validateStruct(query)
 
 		if len(errors) != 0 {
-			return errorsutil.NewHTTPValidationError(errors)
+			return errorstool.NewHTTPValidationError(errors)
 		}
 
 		c.Locals("query", query)
