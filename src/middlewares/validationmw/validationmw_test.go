@@ -45,7 +45,7 @@ func sendRequestWithQuery(query string) (*http.Response, error) {
 	return app.Test(r)
 }
 
-func Test_Validation_ValidateBodyMiddleware_Success(t *testing.T) {
+func Test_ValidationMW_ValidateBodyMiddleware_Success(t *testing.T) {
 	jsonValidMockData, _ := json.Marshal(MockData{
 		Name:     "Timber",
 		Login:    "Saw",
@@ -58,7 +58,7 @@ func Test_Validation_ValidateBodyMiddleware_Success(t *testing.T) {
 	assert.Equal(t, response.StatusCode, fiber.StatusOK, "success validation error")
 }
 
-func Test_Validation_ValidateBodyMiddleware_Fail(t *testing.T) {
+func Test_ValidationMW_ValidateBodyMiddleware_Fail(t *testing.T) {
 	jsonInvalidMockData, _ := json.Marshal(MockData{
 		Name:     "Timber",
 		Password: "qwerty",
@@ -70,7 +70,7 @@ func Test_Validation_ValidateBodyMiddleware_Fail(t *testing.T) {
 	assert.Equal(t, response.StatusCode, fiber.StatusBadRequest, "fail validation error")
 }
 
-func Benchmark_Validation_ValidateBodyMiddleware(b *testing.B) {
+func Benchmark_ValidationMW_ValidateBodyMiddleware(b *testing.B) {
 	jsonValidMockData, _ := json.Marshal(MockData{
 		Name:     "Timber",
 		Login:    "Saw",
@@ -82,20 +82,20 @@ func Benchmark_Validation_ValidateBodyMiddleware(b *testing.B) {
 	}
 }
 
-func Benchmark_Validation_ValidateQueryMiddleware(b *testing.B) {
+func Benchmark_ValidationMW_ValidateQueryMiddleware(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, _ = sendRequestWithQuery("name=Timber&login=saw&password=query")
 	}
 }
 
-func Test_Validation_ValidateQueryMiddleware_Success(t *testing.T) {
+func Test_ValidationMW_ValidateQueryMiddleware_Success(t *testing.T) {
 	response, err := sendRequestWithQuery("?name=Timber&login=saw&password=query")
 
 	assert.Nil(t, err)
 	assert.Equal(t, response.StatusCode, fiber.StatusOK, "success validation error")
 }
 
-func Test_Validation_ValidateQueryMiddleware_Fail(t *testing.T) {
+func Test_ValidationMW_ValidateQueryMiddleware_Fail(t *testing.T) {
 	response, err := sendRequestWithQuery("?name=Timber&password=query")
 
 	assert.Nil(t, err)

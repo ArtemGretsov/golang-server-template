@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func Test_AuthGuard_Create_And_Parse_JWT(t *testing.T) {
+func Test_AuthMW_Create_And_Parse_JWT(t *testing.T) {
 	inJWTPayload := JWTPayload{
 		ID: 1,
 		Name: "name",

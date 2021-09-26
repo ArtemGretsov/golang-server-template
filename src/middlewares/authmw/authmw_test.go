@@ -11,7 +11,7 @@ import (
 
 const TestRoute = "/test"
 
-func Test_Middleware_Fail(t *testing.T) {
+func Test_AuthMw_Middleware_Fail(t *testing.T) {
 	app := server.InitForTest()
 
 	app.Get(TestRoute, Middleware, func(ctx *fiber.Ctx) error {
@@ -27,7 +27,7 @@ func Test_Middleware_Fail(t *testing.T) {
 	assert.Equal(t, response.StatusCode, fiber.StatusUnauthorized, "status code is not unauthorized")
 }
 
-func Test_Middleware_Success(t *testing.T) {
+func Test_AuthMw_Middleware_Success(t *testing.T) {
 	app := server.InitForTest()
 
 	app.Get(TestRoute, Middleware, func(ctx *fiber.Ctx) error {
