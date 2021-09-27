@@ -17,17 +17,8 @@ var Service = ServiceType{
 	UserRepository: userrep.Repository,
 }
 
-func (s *ServiceType) LoginUser(login string, password string) userrep.User {
-	user, err := s.UserRepository.GetUserByLogin(login)
-
-	if err != nil {
-		panic(err)
-	}
-
-	return user
-}
-
 func (s *ServiceType) Signup(ctx *fiber.Ctx) error {
+	rCtx := ctx.UserContext()
 	body := ctx.Locals("body").(*SignupReqDto)
 	hashPassword, err := bcrypt.GenerateFromPassword([]byte(body.Password), bcrypt.DefaultCost)
 
@@ -35,18 +26,14 @@ func (s *ServiceType) Signup(ctx *fiber.Ctx) error {
 		return errorstool.NewHTTPInternalServerError(err.Error())
 	}
 
-	user, err := s.UserRepository.SaveUser(userrep.User{
-		Login: body.Login,
-		Password: string(hashPassword),
-		Name: body.Name,
-	})
+	user, err := s.UserRepository.SaveUser(rCtx, body.Login, body.Name, string(hashPassword))
 
 	if err != nil {
 		return errorstool.NewHTTPInternalServerError(err.Error())
 	}
 
 	token, err := authmw.CreateJWT(authmw.JWTPayload{
-		ID: int(user.ID),
+		ID: user.ID,
 		Name: user.Name,
 		Login: user.Login,
 	})

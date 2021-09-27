@@ -21,3 +21,10 @@ db-migrate-up:
 
 db-migrate-down:
 	@migrate -database $(POSTGRES_CONNECT_STRING) -path $(MIGRATIONS_DIR) down
+
+ent-create:
+	@go run entgo.io/ent/cmd/ent init --target ./src/database/schema $(name)
+
+ent-generate:
+	@rm -rf ./src/database/_schemagen
+	@go run entgo.io/ent/cmd/ent generate --target ./src/database/_schemagen ./src/database/schema

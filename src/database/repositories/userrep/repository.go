@@ -1,24 +1,22 @@
 package userrep
 
-import "github.com/ArtemGretsov/golang-server-template/src/database"
+import (
+	"context"
+
+	"github.com/ArtemGretsov/golang-server-template/src/database"
+	"github.com/ArtemGretsov/golang-server-template/src/database/_schemagen"
+)
 
 type RepositoryInterface interface {
-	GetUserByLogin(login string) (User, error)
-	SaveUser(userData User) (User, error)
+	SaveUser(ctx context.Context, login, name, password string) (*_schemagen.User, error)
 }
 
 type repository struct{}
 
 var Repository RepositoryInterface = &repository{}
 
-func (repository) GetUserByLogin(login string) (user User, err error) {
-	db := database.DB()
-	err = db.Get(&user, "select * from users where login=$1", login)
-	return
-}
-
-func (repository) SaveUser(userData User) (user User, err error) {
-	db := database.DB()
-	_, err = db.NamedExec("insert into users(name, login, password) values(:name, :login, :password)", &userData)
+func (repository) SaveUser(ctx context.Context, login, name, password string) (user *_schemagen.User, err error) {
+	DB := database.DB()
+	user, err = DB.User.Create().SetLogin(login).SetName(name).SetPassword(password).Save(ctx)
 	return
 }
