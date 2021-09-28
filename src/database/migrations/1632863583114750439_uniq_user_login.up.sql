@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX IF NOT EXISTS "users_login" ON "users"("login");

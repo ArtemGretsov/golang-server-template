@@ -4,6 +4,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"golang.org/x/crypto/bcrypt"
 
+	"github.com/ArtemGretsov/golang-server-template/src/database/_schemagen"
 	"github.com/ArtemGretsov/golang-server-template/src/database/repositories/userrep"
 	"github.com/ArtemGretsov/golang-server-template/src/middlewares/authmw"
 	"github.com/ArtemGretsov/golang-server-template/src/tools/errorstool"
@@ -27,6 +28,10 @@ func (s *ServiceType) Signup(ctx *fiber.Ctx) error {
 	}
 
 	user, err := s.UserRepository.SaveUser(rCtx, body.Login, body.Name, string(hashPassword))
+
+	if _schemagen.IsConstraintError(err) {
+		return errorstool.NewHttpBadRequestError("this login already exists")
+	}
 
 	if err != nil {
 		return errorstool.NewHTTPInternalServerError(err.Error())

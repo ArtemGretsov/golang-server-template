@@ -17,6 +17,12 @@ var Repository RepositoryInterface = &repository{}
 
 func (repository) SaveUser(ctx context.Context, login, name, password string) (user *_schemagen.User, err error) {
 	DB := database.DB()
-	user, err = DB.User.Create().SetLogin(login).SetName(name).SetPassword(password).Save(ctx)
+	user, err = DB.User.
+		Create().
+		SetLogin(login).
+		SetName(name).
+		SetPassword(password).
+		Save(ctx)
+
 	return
 }

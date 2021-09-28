@@ -13,14 +13,14 @@ app-benchmark:
 db-run:
 	@docker-compose --env-file .env.local up -d
 
-db-migrate-create:
-	@migrate create -ext sql -dir $(MIGRATIONS_DIR) $(name)
-
 db-migrate-up:
-	@migrate -database $(POSTGRES_CONNECT_STRING) -path $(MIGRATIONS_DIR) up
+	@go run src/database/migrations/migration.go up
 
 db-migrate-down:
-	@migrate -database $(POSTGRES_CONNECT_STRING) -path $(MIGRATIONS_DIR) down
+	@go run src/database/migrations/migration.go down
+
+db-migrate-generate:
+	@go run src/database/migrations/migration.go generate $(name)
 
 ent-create:
 	@go run entgo.io/ent/cmd/ent init --target ./src/database/schema $(name)

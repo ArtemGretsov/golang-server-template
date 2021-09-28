@@ -18,7 +18,7 @@ type HTTPErrorRequestID struct {
 	RequestID string `json:"requestId"`
 }
 
-const InternalServerErrorMessage = "Internal Server Error"
+const InternalServerErrorMessage = "internal server error"
 
 func (h *HTTPError) Error() string {
 	return h.Message
@@ -41,7 +41,7 @@ func NewHTTPError(code int, message string, messages ...string) *HTTPError {
 
 func NewHTTPNotFoundError(messages ...string) *HTTPError {
 	var messageCode *string
-	message := "Not Found"
+	message := "not found"
 
 	if len(messages) > 0 {
 		message = messages[0]
@@ -91,7 +91,7 @@ func NewHTTPInternalServerError(message string, messages ...string) *HTTPError {
 
 func NewHTTPValidationError(details interface{}) *HTTPError {
 	return &HTTPError{
-		Message:    "Validation Error",
+		Message:    "validation error",
 		StatusCode: fiber.StatusBadRequest,
 		Timestamp:  time.Now().UTC(),
 		Details:    details,
