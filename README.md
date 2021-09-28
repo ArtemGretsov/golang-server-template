@@ -1,1 +1,1 @@
-WIP [Migration for Ent.] - Up/Down Migration Generation (SQL)
+WIP
