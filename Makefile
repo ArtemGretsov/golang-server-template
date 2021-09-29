@@ -10,16 +10,16 @@ app-test:
 app-benchmark:
 	@go test -bench Benchmark -benchtime=1000x -benchmem ./src/...
 
-db-run:
+env-run:
 	@docker-compose --env-file .env.local up -d
 
-db-migrate-up:
+migrate-up:
 	@go run src/database/migrations/migration.go up
 
-db-migrate-down:
+migrate-down:
 	@go run src/database/migrations/migration.go down
 
-db-migrate-generate:
+migrate-generate:
 	@go run src/database/migrations/migration.go generate $(name)
 
 ent-create:
