@@ -155,13 +155,13 @@ func Up() {
 
 		_, err = tx.ExecContext(ctx, string(migrationContent))
 		if err != nil {
-			color.Red("%s - error!", migrationName)
+			color.Red(" × %s - error!", migrationName)
 			fmt.Println()
 			checkErr(err)
 		}
 
 		_, err = tx.Exec("insert into migrations(name) values($1)", getMigrationName(migrationName))
-		color.Green("%s - successful!", migrationName)
+		color.Green(" ✓ %s - successful!", migrationName)
 	}
 
 	err = tx.Commit()
@@ -242,7 +242,7 @@ func Down()  {
 	_, err = tx.ExecContext(ctx, string(downMigrationContent))
 
 	if err != nil {
-		color.Red("%s - error!", downMigrationName)
+		color.Red(" × %s - error!", downMigrationName)
 	}
 	checkErr(err)
 
@@ -251,7 +251,7 @@ func Down()  {
 	err = tx.Commit()
 	checkErr(err)
 
-	color.Green("%s - successful!", downMigrationName)
+	color.Green(" ✓ %s - successful!", downMigrationName)
 	fmt.Println()
 }
 /* ------------------ */
