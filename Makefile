@@ -4,10 +4,10 @@
 POSTGRES_CONNECT_STRING=postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=disable
 MIGRATIONS_DIR=./internal/database/migrations
 
-app-test:
+test:
 	@TEST_EVN=1 go test ./internal/... | grep -v "no test files"
 
-app-benchmark:
+benchmark:
 	@go test -bench Benchmark -benchtime=1000x -benchmem ./internal/...
 
 env-run:
