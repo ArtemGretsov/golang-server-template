@@ -2,9 +2,9 @@ package main
 
 import (
 	"github.com/ArtemGretsov/golang-server-template/config"
-	"github.com/ArtemGretsov/golang-server-template/src/database"
-	"github.com/ArtemGretsov/golang-server-template/src/modules"
-	"github.com/ArtemGretsov/golang-server-template/src/server"
+	"github.com/ArtemGretsov/golang-server-template/internal/database"
+	"github.com/ArtemGretsov/golang-server-template/internal/modules"
+	"github.com/ArtemGretsov/golang-server-template/internal/server"
 )
 
 func main() {

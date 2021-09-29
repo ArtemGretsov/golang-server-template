@@ -2,29 +2,29 @@
 -include .env.local
 
 POSTGRES_CONNECT_STRING=postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=disable
-MIGRATIONS_DIR=./src/database/migrations
+MIGRATIONS_DIR=./internal/database/migrations
 
 app-test:
-	@TEST_EVN=1 go test ./src/... | grep -v "no test files"
+	@TEST_EVN=1 go test ./internal/... | grep -v "no test files"
 
 app-benchmark:
-	@go test -bench Benchmark -benchtime=1000x -benchmem ./src/...
+	@go test -bench Benchmark -benchtime=1000x -benchmem ./internal/...
 
 env-run:
 	@docker-compose --env-file .env.local up -d
 
 migrate-up:
-	@go run src/database/migrations/migration.go up
+	@go run internal/database/migrations/migration.go up
 
 migrate-down:
-	@go run src/database/migrations/migration.go down
+	@go run internal/database/migrations/migration.go down
 
 migrate-generate:
-	@go run src/database/migrations/migration.go generate $(name)
+	@go run internal/database/migrations/migration.go generate $(name)
 
 ent-create:
-	@go run entgo.io/ent/cmd/ent init --target ./src/database/schema $(name)
+	@go run entgo.io/ent/cmd/ent init --target ./internal/database/schema $(name)
 
 ent-generate:
-	@rm -rf ./src/database/_schemagen
-	@go run entgo.io/ent/cmd/ent generate --target ./src/database/_schemagen ./src/database/schema
+	@rm -rf ./internal/database/_schemagen
+	@go run entgo.io/ent/cmd/ent generate --target ./internal/database/_schemagen ./internal/database/schema
