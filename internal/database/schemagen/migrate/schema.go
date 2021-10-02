@@ -14,6 +14,7 @@ var (
 		{Name: "login", Type: field.TypeString, Unique: true},
 		{Name: "name", Type: field.TypeString},
 		{Name: "password", Type: field.TypeString},
+		{Name: "is_active", Type: field.TypeBool, Default: true},
 	}
 	// UsersTable holds the schema information for the "users" table.
 	UsersTable = &schema.Table{

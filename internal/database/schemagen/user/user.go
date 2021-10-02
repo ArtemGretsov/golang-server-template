@@ -13,6 +13,8 @@ const (
 	FieldName = "name"
 	// FieldPassword holds the string denoting the password field in the database.
 	FieldPassword = "password"
+	// FieldIsActive holds the string denoting the isactive field in the database.
+	FieldIsActive = "is_active"
 	// Table holds the table name of the user in the database.
 	Table = "users"
 )
@@ -23,6 +25,7 @@ var Columns = []string{
 	FieldLogin,
 	FieldName,
 	FieldPassword,
+	FieldIsActive,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -34,3 +37,14 @@ func ValidColumn(column string) bool {
 	}
 	return false
 }
+
+var (
+	// LoginValidator is a validator for the "login" field. It is called by the builders before save.
+	LoginValidator func(string) error
+	// NameValidator is a validator for the "name" field. It is called by the builders before save.
+	NameValidator func(string) error
+	// PasswordValidator is a validator for the "password" field. It is called by the builders before save.
+	PasswordValidator func(string) error
+	// DefaultIsActive holds the default value on creation for the "isActive" field.
+	DefaultIsActive bool
+)

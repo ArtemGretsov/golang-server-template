@@ -7,8 +7,26 @@ type SignupReqDto struct {
 }
 
 type SignupResDto struct {
-	ID    int
-	Name  string
-	Login string
-	Token string
+	ID    int    `json:"id"`
+	Name  string `json:"name"`
+	Login string `json:"login"`
+	Token string `json:"token"`
+}
+
+type SigninReqDto struct {
+	Login    string `validate:"required" json:"login"`
+	Password string `validate:"required" json:"password"`
+}
+
+type SigninResDto struct {
+	ID    int    `json:"id"`
+	Name  string `json:"name"`
+	Login string `json:"login"`
+	Token string `json:"token"`
+}
+
+type CurrentUserReqDto struct {
+	ID    int    `json:"id"`
+	Name  string `json:"name"`
+	Login string `json:"login"`
 }

@@ -5,9 +5,9 @@ package enttest
 import (
 	"context"
 
-	"github.com/ArtemGretsov/golang-server-template/internal/database/_schemagen"
+	"github.com/ArtemGretsov/golang-server-template/internal/database/schemagen"
 	// required by schema hooks.
-	_ "github.com/ArtemGretsov/golang-server-template/internal/database/_schemagen/runtime"
+	_ "github.com/ArtemGretsov/golang-server-template/internal/database/schemagen/runtime"
 
 	"entgo.io/ent/dialect/sql/schema"
 )
@@ -24,13 +24,13 @@ type (
 	Option func(*options)
 
 	options struct {
-		opts        []_schemagen.Option
+		opts        []schemagen.Option
 		migrateOpts []schema.MigrateOption
 	}
 )
 
 // WithOptions forwards options to client creation.
-func WithOptions(opts ..._schemagen.Option) Option {
+func WithOptions(opts ...schemagen.Option) Option {
 	return func(o *options) {
 		o.opts = append(o.opts, opts...)
 	}
@@ -51,10 +51,10 @@ func newOptions(opts []Option) *options {
 	return o
 }
 
-// Open calls _schemagen.Open and auto-run migration.
-func Open(t TestingT, driverName, dataSourceName string, opts ...Option) *_schemagen.Client {
+// Open calls schemagen.Open and auto-run migration.
+func Open(t TestingT, driverName, dataSourceName string, opts ...Option) *schemagen.Client {
 	o := newOptions(opts)
-	c, err := _schemagen.Open(driverName, dataSourceName, o.opts...)
+	c, err := schemagen.Open(driverName, dataSourceName, o.opts...)
 	if err != nil {
 		t.Error(err)
 		t.FailNow()
@@ -66,10 +66,10 @@ func Open(t TestingT, driverName, dataSourceName string, opts ...Option) *_schem
 	return c
 }
 
-// NewClient calls _schemagen.NewClient and auto-run migration.
-func NewClient(t TestingT, opts ...Option) *_schemagen.Client {
+// NewClient calls schemagen.NewClient and auto-run migration.
+func NewClient(t TestingT, opts ...Option) *schemagen.Client {
 	o := newOptions(opts)
-	c := _schemagen.NewClient(o.opts...)
+	c := schemagen.NewClient(o.opts...)
 	if err := c.Schema.Create(context.Background(), o.migrateOpts...); err != nil {
 		t.Error(err)
 		t.FailNow()

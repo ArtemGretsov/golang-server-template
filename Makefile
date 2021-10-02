@@ -26,5 +26,5 @@ ent-create:
 	@go run entgo.io/ent/cmd/ent init --target ./internal/database/schema $(name)
 
 ent-generate:
-	@rm -rf ./internal/database/_schemagen
-	@go run entgo.io/ent/cmd/ent generate --target ./internal/database/_schemagen ./internal/database/schema
+	@rm -rf ./internal/database/schemagen
+	@go run entgo.io/ent/cmd/ent generate --target ./internal/database/schemagen ./internal/database/schema

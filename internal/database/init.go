@@ -6,17 +6,17 @@ import (
 	"sync"
 
 	"github.com/ArtemGretsov/golang-server-template/config"
-	"github.com/ArtemGretsov/golang-server-template/internal/database/_schemagen"
+	"github.com/ArtemGretsov/golang-server-template/internal/database/schemagen"
 )
 
-var DBInstance *_schemagen.Client
+var DBInstance *schemagen.Client
 var once sync.Once
 
-func DB() *_schemagen.Client {
+func DB() *schemagen.Client {
 	once.Do(func() {
 		var err error
 		serverConfig := config.Get()
-		DBInstance, err = _schemagen.Open("postgres", serverConfig["POSTGRES_CONNECT_STRING"])
+		DBInstance, err = schemagen.Open("postgres", serverConfig["POSTGRES_CONNECT_STRING"])
 
 		if err != nil {
 			log.Fatal(err)

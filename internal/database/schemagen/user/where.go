@@ -4,7 +4,7 @@ package user
 
 import (
 	"entgo.io/ent/dialect/sql"
-	"github.com/ArtemGretsov/golang-server-template/internal/database/_schemagen/predicate"
+	"github.com/ArtemGretsov/golang-server-template/internal/database/schemagen/predicate"
 )
 
 // ID filters vertices based on their ID field.
@@ -108,6 +108,13 @@ func Name(v string) predicate.User {
 func Password(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldPassword), v))
+	})
+}
+
+// IsActive applies equality check predicate on the "isActive" field. It's identical to IsActiveEQ.
+func IsActive(v bool) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldIsActive), v))
 	})
 }
 
@@ -441,6 +448,20 @@ func PasswordEqualFold(v string) predicate.User {
 func PasswordContainsFold(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldPassword), v))
+	})
+}
+
+// IsActiveEQ applies the EQ predicate on the "isActive" field.
+func IsActiveEQ(v bool) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldIsActive), v))
+	})
+}
+
+// IsActiveNEQ applies the NEQ predicate on the "isActive" field.
+func IsActiveNEQ(v bool) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldIsActive), v))
 	})
 }
 
