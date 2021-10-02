@@ -12,7 +12,6 @@ test-integration:
 	@docker-compose -f docker-compose.test.yml build -q
 	@docker-compose -f docker-compose.test.yml up -V
 
-
 benchmark:
 	@go test -bench Benchmark -benchtime=1000x -benchmem ./internal/...
 
