@@ -7,11 +7,17 @@ MIGRATIONS_DIR=./internal/database/migrations
 test:
 	@TEST_EVN=1 go test ./internal/... | grep -v "no test files"
 
+test-integration:
+	@echo "Build..."
+	@docker-compose -f docker-compose.test.yml build -q
+	@docker-compose -f docker-compose.test.yml up -V
+
+
 benchmark:
 	@go test -bench Benchmark -benchtime=1000x -benchmem ./internal/...
 
 env-run:
-	@docker-compose --env-file .env.local up -d
+	@docker-compose --env-file .env.local -f docker-compose.yml up --remove-orphans
 
 migrate-up:
 	@go run internal/database/migrations/migration.go up

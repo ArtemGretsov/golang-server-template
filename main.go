@@ -9,7 +9,8 @@ import (
 
 func main() {
 	/* Init database */
-	database.DB()
+	DB := database.DB()
+	defer DB.Close()
 
 	/* Int fiber app */
 	serverConfig := config.Get()

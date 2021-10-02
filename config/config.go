@@ -37,8 +37,9 @@ func getEnvFilePaths(envFiles []string) []string {
 	}
 
 	currentWorkDirectory, _ := os.Getwd()
+
 	rootPath := regexp.
-		MustCompile(`(.+)/src/.+`).
+		MustCompile(`(.+)/internal/.+`).
 		ReplaceAllString(currentWorkDirectory, `$1`)
 
 	var fullPathEnvFiles []string
